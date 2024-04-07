@@ -1,4 +1,4 @@
-module go-pkg
+module github.com/ClearDewy/go-pkg
 
 go 1.20
 
