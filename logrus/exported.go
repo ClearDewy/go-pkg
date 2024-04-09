@@ -331,19 +331,22 @@ func SetErrorSkip(skip int) {
 	Skip = skip
 }
 
-func HandleError(err error) {
+func HandleError(err error, msg string) {
 	if err == nil {
 		return
 	}
-	for i := 1; i <= Skip; i++ {
+	_, file, line, ok := runtime.Caller(1)
+	if ok {
+		std.Errorf("%s\n.At %s:%d. \n%v", msg, file, line, err)
+	} else {
+		std.Errorf("%s\n.Can't get the location. \n%v", msg, err)
+	}
+	for i := 2; i <= Skip; i++ {
 		_, file, line, ok := runtime.Caller(i)
 		if ok {
 			std.Errorf("At %s:%d. \n%v", file, line, err)
 		} else {
-			if i == 1 {
-				std.Errorf("Can't get the location. \n%v", err)
-			}
-			return
+			break
 		}
 	}
 }
