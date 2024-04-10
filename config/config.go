@@ -26,15 +26,16 @@ func setFieldWithValue(field reflect.Value, value string) error {
 		switch field.Kind() {
 		case reflect.String:
 			field.SetString(value)
-		case reflect.Int, reflect.Uint:
+		case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64, reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
 			// 首先检查字段类型是否为 time.Duration
-			if field.Type() == reflect.TypeOf(time.Duration(0)) {
+			switch field.Type() {
+			case reflect.TypeOf(time.Duration(0)):
 				if duration, err := time.ParseDuration(value); err == nil {
 					field.Set(reflect.ValueOf(duration))
 				} else {
 					return err
 				}
-			} else {
+			default:
 				// 处理普通的整数
 				if intValue, err := strconv.ParseInt(value, 10, 64); err == nil {
 					field.SetInt(intValue)
