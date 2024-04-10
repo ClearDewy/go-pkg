@@ -26,7 +26,7 @@ func setFieldWithValue(field reflect.Value, value string) error {
 		switch field.Kind() {
 		case reflect.String:
 			field.SetString(value)
-		case reflect.Int, reflect.Int64:
+		case reflect.Int, reflect.Uint:
 			// 首先检查字段类型是否为 time.Duration
 			if field.Type() == reflect.TypeOf(time.Duration(0)) {
 				if duration, err := time.ParseDuration(value); err == nil {
