@@ -2,7 +2,7 @@
  * @ Author: ClearDewy
  * @ Desc:
  **/
-package sql
+package dSql
 
 import "fmt"
 
