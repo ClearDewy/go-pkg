@@ -5,7 +5,6 @@
 package config
 
 import (
-	"os"
 	"reflect"
 	"regexp"
 	"strconv"
@@ -13,32 +12,6 @@ import (
 	"time"
 )
 
-func loadEnvDefault(v interface{}) error {
-	elem := reflect.ValueOf(v).Elem()
-
-	for i := 0; i < elem.NumField(); i++ {
-		field := elem.Field(i)
-		typeField := elem.Type().Field(i)
-		var err error
-
-		envName := typeField.Tag.Get("env")
-		if envName == "" {
-			envName = camelCaseToEnvVar(typeField.Name)
-		}
-		if envVal, ok := os.LookupEnv(envName); field.CanSet() {
-			if ok {
-				err = setFieldWithValue(field, envVal)
-			} else {
-				if tagValue := typeField.Tag.Get("default"); tagValue != "" {
-					err = setFieldWithValue(field, tagValue)
-				}
-			}
-		} else if err != nil {
-			return err
-		}
-	}
-	return nil
-}
 func camelCaseToEnvVar(name string) string {
 	// 正则表达式匹配大写字母
 	re := regexp.MustCompile(`[A-Z][^A-Z]*`)
