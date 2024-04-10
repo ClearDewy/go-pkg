@@ -331,7 +331,7 @@ func SetErrorSkip(skip int) {
 	Skip = skip
 }
 
-func HandleError(err error, msg string) {
+func ErrorM(err error, msg string) {
 	if err == nil {
 		return
 	}
