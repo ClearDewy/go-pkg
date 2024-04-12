@@ -337,16 +337,21 @@ func ErrorM(err error, msg string) {
 	}
 	_, file, line, ok := runtime.Caller(1)
 	if ok {
-		std.Errorf("%s\n.At %s:%d. \n%v", msg, file, line, err)
+		std.Errorf("%s\n.%v\nAt %s:%d. \n", msg, err, file, line)
 	} else {
 		std.Errorf("%s\n.Can't get the location. \n%v", msg, err)
 	}
 	for i := 2; i <= Skip; i++ {
 		_, file, line, ok := runtime.Caller(i)
 		if ok {
-			std.Errorf("At %s:%d. \n%v", file, line, err)
+			std.Errorf("At %s:%d. \n", file, line)
 		} else {
 			break
 		}
 	}
+}
+
+func FatalM(err error, msg string) {
+	ErrorM(err, msg)
+	os.Exit(1)
 }
